@@ -106,18 +106,18 @@ class Casing
         group = group.asMap().entries.map(
             (entry)
             {
-                var index = entry.key;
-                var word = entry.value;
+                final index = entry.key;
+                final word = entry.value;
 
-                var isAfterPunctuation = index > 0 && punctuationList.any(
+                final isAfterPunctuation = index > 0 && punctuationList.any(
                     (punctuation) => group[index - 1].endsWith(punctuation)
                 );
-                var isExcluded = exclusionListEng.any(
+                final isExcluded = exclusionListEng.any(
                     (excluded) => excluded == word.toLowerCase()
                 );
-                var isFirstOrLast = index == 0 || index == group.length - 1;
-                var isNumber = RegExp(r'^\d+$').hasMatch(word);
-                var shouldBeCapitalized = 
+                final isFirstOrLast = index == 0 || index == group.length - 1;
+                final isNumber = RegExp(r'^\d+$').hasMatch(word);
+                final shouldBeCapitalized = 
                     (isAfterPunctuation || !isExcluded || isFirstOrLast) 
                     && !isNumber;
 
