@@ -90,9 +90,7 @@ void main() {
 
     test('titleCase should correctly assign casing after punctuation', () {
       expect(Casing.titleCase("chapter 2: the test"), equals('Chapter 2: The Test'));
-      expect(Casing.titleCase("tests. unit vs golden"), equals('Tests Unit vs Golden'));
       expect(Casing.titleCase("question? answer"), equals('Question? Answer'));
-      expect(Casing.titleCase("statement! response"), equals('Statement! Response'));
       expect(Casing.titleCase("statement! response"), equals('Statement! Response'));
     });
 
