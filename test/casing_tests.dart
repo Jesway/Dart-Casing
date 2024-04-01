@@ -76,7 +76,7 @@ void main() {
     });
 
     test('titleCase should convert various inputs to Title Case', () {
-      expect(Casing.titleCase("my_word separated.by-multiple\\symbols"), equals('My Word Separated By Multiple Symbols'));
+      expect(Casing.titleCase("my_word separated.by-multiple\\symbols"), equals('My Word Separated by Multiple Symbols'));
       expect(Casing.titleCase("myCamelCaseWord"), equals('My Camel Case Word'));
       expect(Casing.titleCase("MyPascalCaseWord"), equals('My Pascal Case Word'));
       expect(Casing.titleCase("my_snake_case_word"), equals('My Snake Case Word'));
@@ -86,6 +86,18 @@ void main() {
       expect(Casing.titleCase("my lower case word"), equals('My Lower Case Word'));
       expect(Casing.titleCase("MY UPPER CASE WORD"), equals('My Upper Case Word'));
       expect(Casing.titleCase("An Article Title To Test"), equals('An Article Title to Test'));
+    });
+
+    test('titleCase should correctly assign casing after punctuation', () {
+      expect(Casing.titleCase("chapter 2: the test"), equals('Chapter 2: The Test'));
+      expect(Casing.titleCase("tests. unit vs golden"), equals('Tests Unit vs Golden'));
+      expect(Casing.titleCase("question? answer"), equals('Question? Answer'));
+      expect(Casing.titleCase("statement! response"), equals('Statement! Response'));
+      expect(Casing.titleCase("statement! response"), equals('Statement! Response'));
+    });
+
+    test('titleCase should correctly split and convert strings with digits at the beginning, middle, and end', () {
+      expect(Casing.titleCase("123add456User789"), equals('123 Add 456 User 789'));
     });
 
     test('lowerCase should convert various inputs to lower case', () {
@@ -110,10 +122,6 @@ void main() {
       expect(Casing.upperCase("My Title Case Word"), equals('MY TITLE CASE WORD'));
       expect(Casing.upperCase("my lower case word"), equals('MY LOWER CASE WORD'));
       expect(Casing.upperCase("MY UPPER CASE WORD"), equals('MY UPPER CASE WORD'));
-    });
-
-    test('titleCase should correctly split and convert strings with digits at the beginning, middle, and end', () {
-      expect(Casing.titleCase("123add456User789"), equals('123 Add 456 User 789'));
     });
   });
 }

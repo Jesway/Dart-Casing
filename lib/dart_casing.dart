@@ -58,64 +58,76 @@ class Casing
     }
 
     // following APA Style guide:
-  // - https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case
-  static String titleCase(String input, {String separator = " "})
-  {
-    List<String> group = _getWordsGroup(input);
+    // - https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case
+    static String titleCase(String input, {String separator = " "})
+    {
+        List<String> group = _getWordsGroup(input);
 
-    // exclusion list
-    List<String> exclusionListEng = [
-      // articles
-      'a',
-      'an',
-      'the',
-      // coordinating conjunctions
-      'and',
-      'but',
-      'for',
-      // 'nor', // not NYT-style
-      'or',
-      // 'so', // not NYT-style
-      'yet',
-      // short prepositions (< 4 chars)
-      'as',
-      'at',
-      'by',
-      'en',
-      'if',
-      'in',
-      'of',
-      // 'off', // not NYT-style
-      'on',
-      'per',
-      'to',
-      // 'up', // not NYT-style
-      'v.',
-      'via',
-      'vs.'
-    ];
-    List<String> punctuationList = [':', '--', '.', '?', '!'];
+        // exclusion list
+        List<String> exclusionListEng = [
+            // articles
+            'a',
+            'an',
+            'the',
+            // coordinating conjunctions
+            'and',
+            'but',
+            'else',
+            'for',
+            'nor',
+            'or',
+            // 'so', // not NYT-style
+            'then',
+            'when',
+            'with',
+            'yet',
+            // short prepositions (< 4 chars)
+            'as',
+            'at',
+            'by',
+            'en',
+            'if',
+            'in',
+            'of',
+            // 'off', // not NYT-style
+            'on',
+            'per',
+            'to',
+            // 'up', // not NYT-style
+            'v',
+            'via',
+            'vs'
+        ];
+        List<String> punctuationList = [
+            ':', '?', '!'
+        ];
 
-    // apply Title Case
-    group = group.asMap().entries.map((word) {
-      var isFirstWord = word.key == 0;
-      var isAfterPunctuation =
-          !isFirstWord && punctuationList.contains(group[word.key - 1]);
-      var isExcluded = exclusionListEng.contains(word.value);
+        // apply Title Case
+        group = group.asMap().entries.map(
+            (entry)
+            {
+                var index = entry.key;
+                var word = entry.value;
 
-      // If NOT first word exception AND is NOT after punctuation AND is part of the exclusion list
-      if (!isFirstWord && !isAfterPunctuation && isExcluded) {
-        // return word unchanged
-        return word.value;
-      }
+                var isAfterPunctuation = index > 0 && punctuationList.any(
+                    (punctuation) => group[index - 1].endsWith(punctuation)
+                );
+                var isExcluded = exclusionListEng.any(
+                    (excluded) => excluded == word.toLowerCase()
+                );
+                var isFirstOrLast = index == 0 || index == group.length - 1;
+                var isNumber = RegExp(r'^\d+$').hasMatch(word);
+                var shouldBeCapitalized = 
+                    (isAfterPunctuation || !isExcluded || isFirstOrLast) 
+                    && !isNumber;
 
-      // capitalize first letter of word
-      return _uppercaseFirst(word.value);
-    }).toList();
+                return shouldBeCapitalized ? _uppercaseFirst(word) : word;
+            }
+        ).toList();
 
-    // rejoin words into sentence string
-    return group.join(separator);
-  }
+        // rejoin words into sentence string
+        return group.join(separator);
+    }
 
     static String lowerCase(String input, {String separator = " "})
     {
